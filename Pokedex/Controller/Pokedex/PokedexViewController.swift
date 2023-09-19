@@ -12,6 +12,8 @@ class PokedexViewController: UIViewController {
     private let pokedexListView = PokedexListView()
     
     public private(set) var currentPokemonCell: PokedexCollectionViewCell?
+    private var currentPokemonCellSnapshot: UIView?
+    var animator: Animator?
     
     // MARK: View Lifecycle
 
@@ -45,9 +47,51 @@ extension PokedexViewController: PokedexListViewDelegate {
         cell: PokedexCollectionViewCell
     ) {
         currentPokemonCell = cell
-        guard let image = currentPokemonCell?.pokemonSpriteImage.image else { return }
-        let vc = PokemonViewController(pokemonImage: image)
-        navigationController?.delegate = PokeTransitionManager.shared
-        navigationController?.pushViewController(vc, animated: true)
+        currentPokemonCellSnapshot = currentPokemonCell?.pokemonSpriteImageView.snapshotView(afterScreenUpdates: false)
+        let vc = PokemonViewController(pokemon: pokemon)
+        vc.transitioningDelegate = self
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+}
+
+extension PokedexViewController: UIViewControllerTransitioningDelegate {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        guard
+            let secondVC = presented as? PokemonViewController,
+            let selectedCellImageViewSnapshot = currentPokemonCellSnapshot
+        else {
+            return nil
+        }
+
+        animator = Animator(
+            type: .present,
+            firstVC: self,
+            secondVC: secondVC,
+            selectedCellImageViewSnapshot: selectedCellImageViewSnapshot
+        )
+        return animator
+    }
+
+    func animationController(
+        forDismissed dismissed: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        guard let secondVC = dismissed as? PokemonViewController,
+              let selectedCellImageViewSnapshot = currentPokemonCellSnapshot else {
+            return nil
+        }
+
+        animator = Animator(
+            type: .dismiss,
+            firstVC: self,
+            secondVC: secondVC,
+            selectedCellImageViewSnapshot: selectedCellImageViewSnapshot
+        )
+
+        return animator
     }
 }

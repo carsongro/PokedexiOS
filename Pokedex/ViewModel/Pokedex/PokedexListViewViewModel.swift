@@ -24,7 +24,7 @@ final class PokedexListViewViewModel: NSObject, @unchecked Sendable {
         didSet {
             for p in pokemon {
                 let viewModel = PokedexCollectionViewCellViewModel(
-                    pokemonId: p.id,
+                    pokemonId: (p.id),
                     pokemonName: p.name,
                     pokemonImageURL: URL(string: p.sprites.versions.generationV.blackWhite.animated?.front_default ?? p.sprites.front_default ?? "")
                 )

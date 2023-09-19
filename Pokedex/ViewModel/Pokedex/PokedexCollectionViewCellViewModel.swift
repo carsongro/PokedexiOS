@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class PokedexCollectionViewCellViewModel: Hashable, Equatable, Sendable {
+struct PokedexCollectionViewCellViewModel: Hashable, Equatable {
     
     public let pokemonId: Int
     public let pokemonName: String

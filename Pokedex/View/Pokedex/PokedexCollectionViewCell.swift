@@ -28,7 +28,7 @@ class PokedexCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    public private(set) var pokemonSpriteImage: UIImageView = {
+    public private(set) var pokemonSpriteImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -41,7 +41,7 @@ class PokedexCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.backgroundColor = .secondarySystemBackground
         addSubviews(
-            pokemonSpriteImage,
+            pokemonSpriteImageView,
             pokemonNameLabel,
             pokemonIdLabel
         )
@@ -58,7 +58,7 @@ class PokedexCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         pokemonIdLabel.text = nil
         pokemonNameLabel.text = nil
-        pokemonSpriteImage.image = nil
+        pokemonSpriteImageView.image = nil
     }
     
     // MARK: Public
@@ -66,19 +66,19 @@ class PokedexCollectionViewCell: UICollectionViewCell {
     public func configure(with viewModel: PokedexCollectionViewCellViewModel) {
         pokemonIdLabel.text = String(viewModel.pokemonId)
         pokemonNameLabel.text = viewModel.pokemonName
-        pokemonSpriteImage.sd_setImage(with: viewModel.pokemonImageURL)
+        pokemonSpriteImageView.sd_setImage(with: viewModel.pokemonImageURL)
     }
     
     // MARK: Private
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            pokemonSpriteImage.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
-            pokemonSpriteImage.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
-            pokemonSpriteImage.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
-            pokemonSpriteImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            pokemonSpriteImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
+            pokemonSpriteImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
+            pokemonSpriteImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
+            pokemonSpriteImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
-            pokemonNameLabel.leftAnchor.constraint(equalTo: pokemonSpriteImage.rightAnchor, constant: 10),
+            pokemonNameLabel.leftAnchor.constraint(equalTo: pokemonSpriteImageView.rightAnchor, constant: 10),
             pokemonNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             pokemonIdLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
